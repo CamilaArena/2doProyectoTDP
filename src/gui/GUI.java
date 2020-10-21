@@ -77,7 +77,7 @@ public class GUI extends JFrame{
 		juego = new Sudoku(9);
 		if(!juego.getCumplePropiedad()) {
 			//Sonido error
-			javax.sound.sampled.Clip sonidoError = null;
+			/*javax.sound.sampled.Clip sonidoError = null;
 		     try{
 		       sonidoError=AudioSystem.getClip();
 		       sonidoError.open(AudioSystem.getAudioInputStream(new File("\\Sonidos\\error.wav")));
@@ -86,7 +86,7 @@ public class GUI extends JFrame{
 		    	 System.out.println(e1);
 		    }
 		     
-		    sonidoError.start();
+		    sonidoError.start();*/
 			JOptionPane.showMessageDialog(null, "Error: no se pudo inicializar el juego");
 			System.exit(0);		
 		}
@@ -339,7 +339,6 @@ public class GUI extends JFrame{
 					b.setIcon(icono);
 					
 					//Listeners de las celdas
-
 					b.addComponentListener(new ComponentAdapter() {
 						@Override
 						public void componentResized(ComponentEvent e) {

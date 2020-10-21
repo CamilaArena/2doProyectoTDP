@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  */
 
 public class Sudoku {
-	
 	//Atributos
 	/**Representa el tablero del juego*/
 	private Celda [][] tablero;
@@ -34,11 +33,9 @@ public class Sudoku {
 	 * Crea un sudoku nuevo.
 	 * @param f, representa la cantidad de filas y columnas del juego
 	 */
-	 
 	public Sudoku(int f) {
-		
 		cantFilas = f;
-		tablero = new Celda[cantFilas][cantFilas]; //Creo el tablero de 9x9
+		tablero = new Celda[cantFilas][cantFilas];
 
 		if(logger == null) {
 			
@@ -56,12 +53,8 @@ public class Sudoku {
 				h.setLevel(Level.OFF);
 		}
 		
-		File archivo = new File("solucion.txt");
-		
-		if(!archivo.exists()) {
-			logger.warning("Error: archivo inexistente");
-		}
-		else {
+			File archivo = new File("solucion.txt");
+
 			if(checkearSolucion(archivo)) {
 				cumplePropiedad = true;
 		
@@ -78,11 +71,9 @@ public class Sudoku {
 			else {
 				cumplePropiedad = false;
 			}
-		}
 	}
 	
 	//Metodos
-	
 	/**
 	 * Inicializa el juego con los datos del archivo.
 	 * @param file, es el archivo que contiene la solucion del juego.
@@ -108,7 +99,7 @@ public class Sudoku {
 				celda.setColumna(j);
 				celda.setCumplePropiedad(true);
 				
-				if(aux == 0) {
+				if(aux == 0 || aux == 1) {
 					celda.setValor(c);
 				}
 			}
@@ -129,37 +120,39 @@ public class Sudoku {
 		int c;
 		int indiceF = 0;
 		int indiceC = 0;
-			
-		try {
-			reader=new Scanner(file);
-		}catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		for(int i=0; i<cantFilas && toRet; i++) {
-			for(int j=0; j<cantFilas && toRet; j++) {
-				if(reader.hasNext()) {
-					c=reader.nextInt();
-					if(c<10) {
-						matriz[i][j]=c;
+		
+		
+		if(file.exists()) {
+			try {
+				reader=new Scanner(file);
+			}catch(FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			for(int i=0; i<cantFilas && toRet; i++) {
+				for(int j=0; j<cantFilas && toRet; j++) {
+					if(reader.hasNext()) {
+						c=reader.nextInt();
+						if(c<10) {
+							matriz[i][j]=c;
+						}
+						else {
+							logger.warning("El archivo no cumple con el formato, existen numero mayores a 9");
+							toRet = false;
+						}
 					}
 					else {
-						logger.warning("El archivo no cumple con el formato, existen numero mayores a 9");
+						logger.warning("El archivo no cumple con el formato, faltan numeros");
 						toRet = false;
 					}
 				}
-				else {
-					logger.warning("El archivo no cumple con el formato, faltan numeros");
-					toRet = false;
+			}
+		
+			if(toRet) {
+				if(reader.hasNext()) {//Si leo mas elementos de los que deberia haber en el archivo.
+					logger.warning("El archivo no cumple con el formato, hay numeros de mas.");
+					toRet = false;	
 				}
 			}
-		}
-		
-		if(toRet) {
-			if(reader.hasNext()) {//Si leo mas elementos de los que deberia haber en el archivo.
-				logger.warning("El archivo no cumple con el formato, hay numeros de mas.");
-				toRet = false;	
-			}
-		}
 			
 		for(int i=0; i<cantFilas && toRet; i++) {
 			for(int j=0; j<cantFilas && toRet; j++) {
@@ -187,7 +180,11 @@ public class Sudoku {
 		             break;
 				 }
 				 toRet=verificarPropiedadesMatriz(i,j,indiceF,indiceC,matriz);
-			}		
+				}		
+			}
+		}
+		else {
+			logger.warning("Error: archivo inexistente");
 		}
 		return toRet;
 	}
@@ -440,7 +437,6 @@ public class Sudoku {
 				}   
 			}
 		}
-		cumplePropiedad = gane;
 		return gane;		
 	}
 	
