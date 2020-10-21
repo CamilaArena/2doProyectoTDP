@@ -13,7 +13,7 @@ public class PanelConFondo extends JPanel {
 	
 	public PanelConFondo() {
 		
-		background = new ImageIcon(getClass().getResource("ImagenFondo.jpg")).getImage();
+		background = new ImageIcon(getClass().getResource("/Imagenes/imgFondo/ImagenFondo.jpg")).getImage();
 	}
 	
 	public Image getImagenFondo() {

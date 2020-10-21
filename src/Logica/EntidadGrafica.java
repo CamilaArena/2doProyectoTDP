@@ -27,11 +27,11 @@ public class EntidadGrafica {
 		*/
 	public EntidadGrafica() {
 		this.grafico=new ImageIcon();
-		this.graficoInicial=new String[] {"/img/QuestionMark.png"};
+		this.graficoInicial=new String[] {"/Imagenes/img/QuestionMark.png"};
 		ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(this.graficoInicial[0]));
 		this.grafico.setImage(imageIcon.getImage());
-		this.imagenes=new String[] {"/img/1.png","/img/2.png","/img/3.png","/img/4.png","/img/5.png","/img/6.png","/img/7.png","/img/8.png","/img/9.png"};
-		this.imagenesError=new String[] {"/imgError/1Error.png","/imgError/2Error.png","/imgError/3Error.png","/imgError/4Error.png","/imgError/5Error.png","/imgError/6Error.png","/imgError/7Error.png","/imgError/8Error.png","/imgError/9Error.png" };
+		this.imagenes=new String[] {"/Imagenes/img/1.png","/Imagenes/img/2.png","/Imagenes/img/3.png","/Imagenes/img/4.png","/Imagenes/img/5.png","/Imagenes/img/6.png","/Imagenes/img/7.png","/Imagenes/img/8.png","/Imagenes/img/9.png"};
+		this.imagenesError=new String[] {"/Imagenes/imgError/1Error.png","/Imagenes/imgError/2Error.png","/Imagenes/imgError/3Error.png","/Imagenes/imgError/4Error.png","/Imagenes/imgError/5Error.png","/Imagenes/imgError/6Error.png","/Imagenes/imgError/7Error.png","/Imagenes/imgError/8Error.png","/Imagenes/imgError/9Error.png" };
 	}
 	
 	

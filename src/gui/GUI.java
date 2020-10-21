@@ -80,7 +80,7 @@ public class GUI extends JFrame{
 			javax.sound.sampled.Clip sonidoError = null;
 		     try{
 		       sonidoError=AudioSystem.getClip();
-		       sonidoError.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\camia\\Desktop\\workspace\\Sudoku\\src\\Sonidos\\error.wav")));
+		       sonidoError.open(AudioSystem.getAudioInputStream(new File("\\Sonidos\\error.wav")));
 		     }
 		     catch(Exception e1){
 		    	 System.out.println(e1);
@@ -113,7 +113,7 @@ public class GUI extends JFrame{
 		panelBotones.setLayout(null);
 		Image background = panelBotones.getImagenFondo();
 		panelBotones.setBackground(background);
-		this.imagenesReloj = new String[] {"/Clock/0.png","/Clock/1.png","/Clock/2.png","/Clock/3.png","/Clock/4.png","/Clock/5.png","/Clock/6.png","/Clock/7.png","/Clock/8.png","/Clock/9.png"};
+		this.imagenesReloj = new String[] {"/Imagenes/Clock/0.png","/Imagenes/Clock/1.png","/Imagenes/Clock/2.png","/Imagenes/Clock/3.png","/Imagenes/Clock/4.png","/Imagenes/Clock/5.png","/Imagenes/Clock/6.png","/Imagenes/Clock/7.png","/Imagenes/Clock/8.png","/Imagenes/Clock/9.png"};
 				
 		//BOTON INICIAR
 		JButton btnIniciar = new JButton("Iniciar");
@@ -179,18 +179,31 @@ public class GUI extends JFrame{
 				btnIniciar.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e) {
 					    
-						//Sonido coin
-						javax.sound.sampled.Clip sonidoCoin = null;
-					     try{
-					       sonidoCoin=AudioSystem.getClip();
-					       sonidoCoin.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\camia\\Desktop\\workspace\\Sudoku\\src\\Sonidos\\Coin.wav")));
-					     }
-					     catch(Exception e1){
-					    	 System.out.println(e1);
-					    }
-					    sonidoCoin.start();
-						
-					    for (int i = 0; i <juego.getCantFilas(); i++) {
+					/*	//Sonido coin
+					       AudioInputStream soundStream = null;
+						try {
+							soundStream = AudioSystem.getAudioInputStream(new File("/Sonidos/Coin.wav"));
+						} catch (UnsupportedAudioFileException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					       //sonidoCoin.open(AudioSystem.getAudioInputStream(new File("Sonidos\\Coin.wav")));
+					       Clip sonidoCoin = null;
+						try {
+							sonidoCoin = AudioSystem.getClip();
+						} catch (LineUnavailableException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					       try {
+							sonidoCoin.open(soundStream);
+						} catch (LineUnavailableException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					       sonidoCoin.start();*/
+					   
+					       for (int i = 0; i <juego.getCantFilas(); i++) {
 							for(int j =0; j<juego.getCantFilas(); j++) {
 								celdas[i][j].setEnabled(true);
 							}
@@ -212,29 +225,29 @@ public class GUI extends JFrame{
 					if(juego.ganar() == true) {	
 						
 						//Sonido win
-						javax.sound.sampled.Clip sonidoWin = null;
+						/*javax.sound.sampled.Clip sonidoWin = null;
 					     try{
 					       sonidoWin=AudioSystem.getClip();
-					       sonidoWin.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\camia\\Desktop\\workspace\\Sudoku\\src\\Sonidos\\Win.wav")));
+					       sonidoWin.open(AudioSystem.getAudioInputStream(new File("\\Win.wav")));
 					     }
 					     catch(Exception e1){
 					    	 System.out.println(e1);
 					    }
 					     
-					     	sonidoWin.start();
+					     	sonidoWin.start();*/
 							JOptionPane.showMessageDialog(null, "¡Felicitaciones, ganaste el juego!");
 						}
 					
 						else {
 							//Sonido game over
-							javax.sound.sampled.Clip sonido = null;
+							/*javax.sound.sampled.Clip sonido = null;
 						     try
 						     {
 						       sonido=AudioSystem.getClip();
-						       sonido.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\camia\\Desktop\\workspace\\Sudoku\\src\\Sonidos\\GameOver.wav")));
+						       sonido.open(AudioSystem.getAudioInputStream(new File("\\Sonidos\\GameOver.wav")));
 						     }catch(Exception e1)
 						       {System.out.println(e1);}
-					        sonido.start();
+					        sonido.start();*/
 					        
 					        JOptionPane.showMessageDialog(null, "¡Perdiste!");
 						}

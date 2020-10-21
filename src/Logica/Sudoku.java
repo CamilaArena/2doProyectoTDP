@@ -56,22 +56,29 @@ public class Sudoku {
 				h.setLevel(Level.OFF);
 		}
 		
-		File archivo = new File ("C:\\Users\\camia\\Desktop\\workspace\\Sudoku\\src\\solucion.txt");
+		File archivo = new File("solucion.txt");
 		
-		if(checkearSolucion(archivo)) {
-			cumplePropiedad = true;
-		
-			try {
-				this.inicializarConArchivo(archivo);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if(!archivo.exists()) {
+			logger.warning("Error: archivo inexistente");
 		}
 		else {
-			cumplePropiedad = false;
-		}	
+			if(checkearSolucion(archivo)) {
+				cumplePropiedad = true;
+		
+				try {
+					this.inicializarConArchivo(archivo);
+				}
+				catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				cumplePropiedad = false;
+			}
+		}
 	}
 	
 	//Metodos
@@ -86,32 +93,27 @@ public class Sudoku {
 		Celda celda = new Celda();
 		int c = 0;
 		
-		if(file.exists()) {
-			try {
-				reader=new Scanner(file);
-			}catch(FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			for (int i =0; i<cantFilas; i++) {
-				for (int j =0; j<cantFilas; j++) {
-					c = reader.nextInt()-1;
-					int aux=rnd.nextInt(3);
-					celda = new Celda();
-					tablero[i][j] = celda;
-					celda.setFila(i);
-					celda.setColumna(j);
-					celda.setCumplePropiedad(true);
+		try {
+			reader=new Scanner(file);
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		for (int i =0; i<cantFilas; i++) {
+			for (int j =0; j<cantFilas; j++) {
+				c = reader.nextInt()-1;
+				int aux=rnd.nextInt(3);
+				celda = new Celda();
+				tablero[i][j] = celda;
+				celda.setFila(i);
+				celda.setColumna(j);
+				celda.setCumplePropiedad(true);
 				
-					if(aux == 0) {
-						celda.setValor(c);
-					}
+				if(aux == 0) {
+					celda.setValor(c);
 				}
-		    }
+			}
+		}
 			reader.close();
-		}
-		else {
-			logger.warning("Error: archivo inexistente");
-		}
 	}
 	
 	
@@ -185,8 +187,7 @@ public class Sudoku {
 		             break;
 				 }
 				 toRet=verificarPropiedadesMatriz(i,j,indiceF,indiceC,matriz);
-			}
-				
+			}		
 		}
 		return toRet;
 	}
