@@ -21,15 +21,19 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.TimerTask;
 
-import javax.sound.sampled.AudioSystem;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
+
+/**
+ * Clase GUI encargada de modelar la parte grafica de un Sudoku.
+ * @author Camila Arena
+ *
+ */
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame{
@@ -76,17 +80,6 @@ public class GUI extends JFrame{
 	private void initialize() {
 		juego = new Sudoku(9);
 		if(!juego.getCumplePropiedad()) {
-			//Sonido error
-			/*javax.sound.sampled.Clip sonidoError = null;
-		     try{
-		       sonidoError=AudioSystem.getClip();
-		       sonidoError.open(AudioSystem.getAudioInputStream(new File("\\Sonidos\\error.wav")));
-		     }
-		     catch(Exception e1){
-		    	 System.out.println(e1);
-		    }
-		     
-		    sonidoError.start();*/
 			JOptionPane.showMessageDialog(null, "Error: no se pudo inicializar el juego");
 			System.exit(0);		
 		}
@@ -178,36 +171,13 @@ public class GUI extends JFrame{
 		//BOTON INICIAR
 				btnIniciar.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e) {
-					    
-					/*	//Sonido coin
-					       AudioInputStream soundStream = null;
-						try {
-							soundStream = AudioSystem.getAudioInputStream(new File("/Sonidos/Coin.wav"));
-						} catch (UnsupportedAudioFileException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					       //sonidoCoin.open(AudioSystem.getAudioInputStream(new File("Sonidos\\Coin.wav")));
-					       Clip sonidoCoin = null;
-						try {
-							sonidoCoin = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					       try {
-							sonidoCoin.open(soundStream);
-						} catch (LineUnavailableException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					       sonidoCoin.start();*/
-					   
-					       for (int i = 0; i <juego.getCantFilas(); i++) {
-							for(int j =0; j<juego.getCantFilas(); j++) {
+							
+					    for (int i = 0; i <juego.getCantFilas(); i++) {
+					    	for(int j =0; j<juego.getCantFilas(); j++) {
 								celdas[i][j].setEnabled(true);
 							}
 						}
+					    
 						jugar = true;
 						panelCeldas.setVisible(true);
 						iniciarReloj();
@@ -220,36 +190,12 @@ public class GUI extends JFrame{
 		//BOTON FINALIZAR
 				btnFinalizar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						jugar = false;
-						
-					if(juego.ganar() == true) {	
-						
-						//Sonido win
-						/*javax.sound.sampled.Clip sonidoWin = null;
-					     try{
-					       sonidoWin=AudioSystem.getClip();
-					       sonidoWin.open(AudioSystem.getAudioInputStream(new File("\\Win.wav")));
-					     }
-					     catch(Exception e1){
-					    	 System.out.println(e1);
-					    }
-					     
-					     	sonidoWin.start();*/
-							JOptionPane.showMessageDialog(null, "¡Felicitaciones, ganaste el juego!");
+						jugar = false;	
+						if(!juego.ganar()) {					        
+							JOptionPane.showMessageDialog(null, "¡Perdiste!");
 						}
-					
 						else {
-							//Sonido game over
-							/*javax.sound.sampled.Clip sonido = null;
-						     try
-						     {
-						       sonido=AudioSystem.getClip();
-						       sonido.open(AudioSystem.getAudioInputStream(new File("\\Sonidos\\GameOver.wav")));
-						     }catch(Exception e1)
-						       {System.out.println(e1);}
-					        sonido.start();*/
-					        
-					        JOptionPane.showMessageDialog(null, "¡Perdiste!");
+							JOptionPane.showMessageDialog(null, "¡Felicitaciones, ganaste el juego!");
 						}
 						panelCeldas.setVisible(false);
 						btnFinalizar.setEnabled(false);
