@@ -171,7 +171,6 @@ public class GUI extends JFrame{
 		//BOTON INICIAR
 				btnIniciar.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e) {
-							
 					    for (int i = 0; i <juego.getCantFilas(); i++) {
 					    	for(int j =0; j<juego.getCantFilas(); j++) {
 								celdas[i][j].setEnabled(true);

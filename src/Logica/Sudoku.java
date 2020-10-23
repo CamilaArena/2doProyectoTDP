@@ -1,8 +1,6 @@
 package Logica;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
@@ -21,9 +19,11 @@ public class Sudoku {
 	//Atributos
 	/**Representa el tablero del juego*/
 	private Celda [][] tablero;
+	/**Representa la matriz que contiene la solucion del juego*/
+	private int matrizSolucion[][];
 	/**Representa la cantidad de filas (y columnas) del juego*/
 	private int cantFilas;
-	/**Denota si el juego cumple con las propiedades*/
+	/**Indica si el juego cumple con las propiedades*/
 	private boolean cumplePropiedad;
 	/**logger de la clase*/
 	private static Logger logger;
@@ -36,6 +36,7 @@ public class Sudoku {
 	public Sudoku(int f) {
 		cantFilas = f;
 		tablero = new Celda[cantFilas][cantFilas];
+		matrizSolucion=new int[cantFilas][cantFilas];
 
 		if(logger == null) {
 			
@@ -52,21 +53,10 @@ public class Sudoku {
 			for(Handler h : rootLogger.getHandlers())
 				h.setLevel(Level.OFF);
 		}
-		
-			File archivo = new File("solucion.txt");
 
-			if(checkearSolucion(archivo)) {
+			if(checkearSolucion()) {
 				cumplePropiedad = true;
-		
-				try {
-					this.inicializarConArchivo(archivo);
-				}
-				catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
+				this.inicializarConArchivo();
 			}
 			else {
 				cumplePropiedad = false;
@@ -75,23 +65,16 @@ public class Sudoku {
 	
 	//Metodos
 	/**
-	 * Inicializa el juego con los datos del archivo.
-	 * @param file, es el archivo que contiene la solucion del juego.
+	 * Inicializa el juego con los datos de la solucion que esta contenida en la matriz.
 	 * */
-	private void inicializarConArchivo(File file) throws IOException, FileNotFoundException {
-		Scanner reader=null;
+	private void inicializarConArchivo() {
 		Random rnd=new Random();
 		Celda celda = new Celda();
-		int c = 0;
+		int c;
 		
-		try {
-			reader=new Scanner(file);
-		}catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
 		for (int i =0; i<cantFilas; i++) {
 			for (int j =0; j<cantFilas; j++) {
-				c = reader.nextInt()-1;
+				c = matrizSolucion[i][j]-1;
 				int aux=rnd.nextInt(3);
 				celda = new Celda();
 				tablero[i][j] = celda;
@@ -104,59 +87,52 @@ public class Sudoku {
 				}
 			}
 		}
-			reader.close();
 	}
 	
 	
 	/**
 	 * Verifica que la solucion del archivo sea valida.
-	 * @param file, es un archivo que contiene la solucion del juego.
 	 * @return true si la solucion del archivo es valida.
 	 * */
-	public boolean checkearSolucion(File file) {
+	public boolean checkearSolucion() {
 		boolean toRet=true;
-		int[][] matriz=new int[cantFilas][cantFilas];
-		Scanner reader=null;
-		int c;
+		Integer c;
+		Scanner scn=null;
 		int indiceF = 0;
 		int indiceC = 0;
 		
+		InputStream in = Sudoku.class.getClassLoader().getResourceAsStream("Archivos/solucion.txt");	
+		try {
+			scn =new Scanner(in);
+		}catch(NullPointerException e) {
+			logger.warning("Error: archivo inexistente");
+			System.exit(0);
+		}
+  
+		c=scn.hasNext() ? scn.nextInt() : null;
 		
-		if(file.exists()) {
-			try {
-				reader=new Scanner(file);
-			}catch(FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			for(int i=0; i<cantFilas && toRet; i++) {
-				for(int j=0; j<cantFilas && toRet; j++) {
-					if(reader.hasNext()) {
-						c=reader.nextInt();
-						if(c<10) {
-							matriz[i][j]=c;
-						}
-						else {
-							logger.warning("El archivo no cumple con el formato, existen numero mayores a 9");
+		for(int i=0; i<cantFilas && toRet ; i++) {
+			for(int j=0; j<cantFilas && toRet; j++) {
+				if(c==null) {
+					logger.warning("Error: archivo invalido, faltan numeros");
+					System.exit(0);
+				}
+				else{
+					if(c>9) {
+							logger.warning("Error: El archivo no cumple con el formato, existen numeros mayores a 9");
 							toRet = false;
 						}
-					}
 					else {
-						logger.warning("El archivo no cumple con el formato, faltan numeros");
-						toRet = false;
+						matrizSolucion[i][j]=c;
 					}
+					c=scn.hasNext() ? scn.nextInt() : null;
 				}
 			}
-		
-			if(toRet) {
-				if(reader.hasNext()) {//Si leo mas elementos de los que deberia haber en el archivo.
-					logger.warning("El archivo no cumple con el formato, hay numeros de mas.");
-					toRet = false;	
-				}
-			}
+		}	
 			
 		for(int i=0; i<cantFilas && toRet; i++) {
 			for(int j=0; j<cantFilas && toRet; j++) {
-				 switch (i) {
+					switch (i) {
 		         case 0: case 1: case 2:  
 		        	 indiceF = 0;
 		        	 break;
@@ -179,13 +155,10 @@ public class Sudoku {
 		        	 indiceC = 6;;
 		             break;
 				 }
-				 toRet=verificarPropiedadesMatriz(i,j,indiceF,indiceC,matriz);
-				}		
+				 toRet = verificarPropiedadesMatriz(i,j,indiceF,indiceC);	
 			}
 		}
-		else {
-			logger.warning("Error: archivo inexistente");
-		}
+		scn.close();
 		return toRet;
 	}
 		
@@ -195,17 +168,16 @@ public class Sudoku {
 	 * @param columna es la columna correspondiente de la celda que se desea verificar.
 	 * @param indiceF fila desde donde se va a verificar.
 	 * @param indiceC columna desde donde se va a verificar.
-	 * @param m es la matriz donde verifico las propiedades del archivo.
 	 * @return true si la solucion de la matriz es valida.
 	 * */
 
-	private boolean verificarPropiedadesMatriz(int fila, int columna, int indiceF, int indiceC,int[][]m) {
+	private boolean verificarPropiedadesMatriz(int fila, int columna, int indiceF, int indiceC) {
 		boolean seVerifica = true;
 		int cantVecesEncontrado = 0;
-		int nroActual = m[fila][columna]; //este nro puede aparecer 1 vez en la fila, columna y matriz 3x3 perteneciente
+		int nroActual = matrizSolucion[fila][columna]; //este nro puede aparecer 1 vez en la fila, columna y matriz 3x3 perteneciente
 			
-		for(int i = 0; i< 9 && seVerifica; i++) {//Recorro toda la fila
-			if(m[fila][i] == nroActual) {
+		for(int i = 0; i< cantFilas && seVerifica; i++) {
+			if(matrizSolucion[fila][i] == nroActual) {
 				cantVecesEncontrado++;
 				if(cantVecesEncontrado>1) {
 					logger.warning("El archivo no verifica las propiedades");
@@ -217,8 +189,8 @@ public class Sudoku {
 		/** si llego hasta esta instancia cantVeces encontrado sera 1 ya que contemplo toda la fila*/
 		if(seVerifica) {
 			cantVecesEncontrado = 0;
-			for(int j = 0; j<9 && seVerifica; j++) {//Recorro toda la columna
-				if(m[j][columna] == nroActual) //Si se repite el valor de la imagen no se verifica la propiedad
+			for(int j = 0; j<cantFilas && seVerifica; j++) {
+				if(matrizSolucion[j][columna] == nroActual) 
 					cantVecesEncontrado++;
 					if(cantVecesEncontrado>1) {
 						logger.warning("El archivo no verifica las propiedades");
@@ -231,15 +203,14 @@ public class Sudoku {
 			
 		for(int i = indiceF; i<indiceF + 3 && seVerifica; i++){
 			for(int j = indiceC; j<indiceC + 3 && seVerifica; j++) {
-				if(nroActual==m[i][j]) {
-					if(m[i][j] == nroActual)
+				if(nroActual == matrizSolucion[i][j]) {
+					if(matrizSolucion[i][j] == nroActual)
 						cantVecesEncontrado++;
 					if(cantVecesEncontrado>1) {
 						logger.warning("El archivo no verifica las propiedades");
 						seVerifica = false;	
 					}
-				}
-					
+				}		
 			}
 		}	
 			return seVerifica;
