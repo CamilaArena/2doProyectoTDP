@@ -1,4 +1,4 @@
-package Logica;
+package logica;
 
 import java.io.InputStream;
 import java.util.Random;
@@ -101,7 +101,7 @@ public class Sudoku {
 		int indiceF = 0;
 		int indiceC = 0;
 		
-		InputStream in = Sudoku.class.getClassLoader().getResourceAsStream("Archivos/solucion.txt");	
+		InputStream in = Sudoku.class.getClassLoader().getResourceAsStream("archivos/solucion.txt");	
 		try {
 			scn =new Scanner(in);
 		}catch(NullPointerException e) {
@@ -114,6 +114,7 @@ public class Sudoku {
 				c=scn.hasNext() ? scn.nextInt() : null;
 				if(c==null) {
 					logger.warning("Error: archivo invalido, faltan numeros");
+					toRet = false;
 					System.exit(0);
 				}
 				else{
@@ -162,7 +163,7 @@ public class Sudoku {
 				 toRet = verificarPropiedadesMatriz(i,j,indiceF,indiceC);	
 			}
 		}
-		}
+	}
 		scn.close();
 		return toRet;
 	}
@@ -179,7 +180,7 @@ public class Sudoku {
 	private boolean verificarPropiedadesMatriz(int fila, int columna, int indiceF, int indiceC) {
 		boolean seVerifica = true;
 		int cantVecesEncontrado = 0;
-		int nroActual = matrizSolucion[fila][columna]; //este nro puede aparecer 1 vez en la fila, columna y matriz 3x3 perteneciente
+		int nroActual = matrizSolucion[fila][columna]; //este numero puede aparecer 1 vez en la fila, columna y el sector
 			
 		for(int i = 0; i< cantFilas && seVerifica; i++) {
 			if(matrizSolucion[fila][i] == nroActual) {
@@ -191,7 +192,7 @@ public class Sudoku {
 			}
 				
 		}
-		/** si llego hasta esta instancia cantVeces encontrado sera 1 ya que contemplo toda la fila*/
+
 		if(seVerifica) {
 			cantVecesEncontrado = 0;
 			for(int j = 0; j<cantFilas && seVerifica; j++) {

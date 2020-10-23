@@ -9,9 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Logica.Celda;
-import Logica.Reloj;
-import Logica.Sudoku;
+import logica.Celda;
+import logica.Reloj;
+import logica.Sudoku;
 
 import java.awt.GridLayout;
 import java.awt.Image;

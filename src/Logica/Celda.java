@@ -1,4 +1,4 @@
-package Logica;
+package logica;
 /**
  * Class Celda
  * Modela una celda del sudoku.
