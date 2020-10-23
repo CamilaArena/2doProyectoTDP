@@ -1,3 +1,0 @@
-Antes de abrir el archivo de texto con la solución verifico que éste exista, que no contenga números de más, 
-que contenga la cantidad de números especificada (es decir, que no tenga números de menos) y que cada número
-esté entre 0 y 9.
