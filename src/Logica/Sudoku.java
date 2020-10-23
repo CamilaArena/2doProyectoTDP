@@ -108,11 +108,10 @@ public class Sudoku {
 			logger.warning("Error: archivo inexistente");
 			System.exit(0);
 		}
-  
-		c=scn.hasNext() ? scn.nextInt() : null;
 		
 		for(int i=0; i<cantFilas && toRet ; i++) {
 			for(int j=0; j<cantFilas && toRet; j++) {
+				c=scn.hasNext() ? scn.nextInt() : null;
 				if(c==null) {
 					logger.warning("Error: archivo invalido, faltan numeros");
 					System.exit(0);
@@ -125,10 +124,15 @@ public class Sudoku {
 					else {
 						matrizSolucion[i][j]=c;
 					}
-					c=scn.hasNext() ? scn.nextInt() : null;
 				}
 			}
-		}	
+		}
+		
+		if(toRet) {
+			if(scn.hasNext()) {
+				logger.warning("Error: El archivo no cumple con el formato, contiene mas numeros de los que deberia");
+				toRet = false;
+			}
 			
 		for(int i=0; i<cantFilas && toRet; i++) {
 			for(int j=0; j<cantFilas && toRet; j++) {
@@ -157,6 +161,7 @@ public class Sudoku {
 				 }
 				 toRet = verificarPropiedadesMatriz(i,j,indiceF,indiceC);	
 			}
+		}
 		}
 		scn.close();
 		return toRet;
