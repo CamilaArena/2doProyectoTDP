@@ -1,5 +1,7 @@
 Funcionamiento de la interfaz: Una vez inicializada la interfaz se podrá observar el panel con un reloj y dos botones: INICIAR y FINALIZAR.
 
+El usuario solamente deberia hacer click en las celdas luego de apretar el boton INICIAR.
+
 BOTON INICIAR: Al presionarlo va a comenzar el juego y va a empezar a correr el reloj. Las celdas con imagenes que aparecen al principio no van a poder ser modificadas
 (tienen borde blanco), solamente se pueden modificar las celdas con signo de pregunta.
 
