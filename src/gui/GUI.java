@@ -176,7 +176,6 @@ public class GUI extends JFrame{
 								celdas[i][j].setEnabled(true);
 							}
 						}
-					    
 						jugar = true;
 						panelCeldas.setVisible(true);
 						iniciarReloj();

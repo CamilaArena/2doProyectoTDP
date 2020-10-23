@@ -23,10 +23,10 @@ public class Sudoku {
 	private int matrizSolucion[][];
 	/**Representa la cantidad de filas (y columnas) del juego*/
 	private int cantFilas;
-	/**Indica si el juego cumple con las propiedades*/
-	private boolean cumplePropiedad;
 	/**logger de la clase*/
 	private static Logger logger;
+	/**Indica si el juego cumple con las propiedades*/
+	private boolean cumplePropiedad;
 	
 	//Constructor
 	/**
@@ -43,10 +43,10 @@ public class Sudoku {
 			logger= Logger.getLogger(Sudoku.class.getName());
 			
 			Handler hnd = new ConsoleHandler();
-			hnd.setLevel(Level.INFO);
+			hnd.setLevel(Level.SEVERE);
 			
 			logger.addHandler(hnd);
-			logger.setLevel(Level.WARNING);
+			logger.setLevel(Level.SEVERE);
 			
 			Logger rootLogger=logger.getParent();
 			
@@ -61,6 +61,7 @@ public class Sudoku {
 			else {
 				cumplePropiedad = false;
 			}
+
 	}
 	
 	//Metodos
@@ -101,26 +102,25 @@ public class Sudoku {
 		int indiceF = 0;
 		int indiceC = 0;
 		
-		InputStream in = Sudoku.class.getClassLoader().getResourceAsStream("archivos/solucion.txt");	
+		InputStream in = Sudoku.class.getClassLoader().getResourceAsStream("Archivos/solucion.txt");	
 		try {
 			scn =new Scanner(in);
 		}catch(NullPointerException e) {
-			logger.warning("Error: archivo inexistente");
-			System.exit(0);
+			toRet = false;
+			logger.severe("Error: archivo inexistente");
 		}
 		
 		for(int i=0; i<cantFilas && toRet ; i++) {
 			for(int j=0; j<cantFilas && toRet; j++) {
 				c=scn.hasNext() ? scn.nextInt() : null;
 				if(c==null) {
-					logger.warning("Error: archivo invalido, faltan numeros");
 					toRet = false;
-					System.exit(0);
+					logger.severe("Error: archivo invalido, faltan numeros");
 				}
 				else{
 					if(c>9) {
-							logger.warning("Error: El archivo no cumple con el formato, existen numeros mayores a 9");
 							toRet = false;
+							logger.severe("Error: El archivo no cumple con el formato, existen numeros mayores a 9");
 						}
 					else {
 						matrizSolucion[i][j]=c;
@@ -131,8 +131,8 @@ public class Sudoku {
 		
 		if(toRet) {
 			if(scn.hasNext()) {
-				logger.warning("Error: El archivo no cumple con el formato, contiene mas numeros de los que deberia");
 				toRet = false;
+				logger.severe("Error: El archivo no cumple con el formato, contiene mas numeros de los que deberia");
 			}
 			
 		for(int i=0; i<cantFilas && toRet; i++) {
@@ -163,8 +163,10 @@ public class Sudoku {
 				 toRet = verificarPropiedadesMatriz(i,j,indiceF,indiceC);	
 			}
 		}
-	}
-		scn.close();
+		}
+		if(toRet) {
+			scn.close();
+		}
 		return toRet;
 	}
 		
@@ -180,26 +182,26 @@ public class Sudoku {
 	private boolean verificarPropiedadesMatriz(int fila, int columna, int indiceF, int indiceC) {
 		boolean seVerifica = true;
 		int cantVecesEncontrado = 0;
-		int nroActual = matrizSolucion[fila][columna]; //este numero puede aparecer 1 vez en la fila, columna y el sector
+		int nroActual = matrizSolucion[fila][columna]; //este nro puede aparecer 1 vez en la fila, columna y matriz 3x3 perteneciente
 			
 		for(int i = 0; i< cantFilas && seVerifica; i++) {
 			if(matrizSolucion[fila][i] == nroActual) {
 				cantVecesEncontrado++;
 				if(cantVecesEncontrado>1) {
-					logger.warning("El archivo no verifica las propiedades");
+					logger.severe("El archivo no verifica las propiedades");
 					seVerifica = false;	
 				}
 			}
 				
 		}
-
+		/** si llego hasta esta instancia cantVeces encontrado sera 1 ya que contemplo toda la fila*/
 		if(seVerifica) {
 			cantVecesEncontrado = 0;
 			for(int j = 0; j<cantFilas && seVerifica; j++) {
 				if(matrizSolucion[j][columna] == nroActual) 
 					cantVecesEncontrado++;
 					if(cantVecesEncontrado>1) {
-						logger.warning("El archivo no verifica las propiedades");
+						logger.severe("El archivo no verifica las propiedades");
 						seVerifica = false;	
 					}
 			}
@@ -213,7 +215,7 @@ public class Sudoku {
 					if(matrizSolucion[i][j] == nroActual)
 						cantVecesEncontrado++;
 					if(cantVecesEncontrado>1) {
-						logger.warning("El archivo no verifica las propiedades");
+						logger.severe("El archivo no verifica las propiedades");
 						seVerifica = false;	
 					}
 				}		
@@ -238,13 +240,6 @@ public class Sudoku {
 		c.actualizarImagenError();
 	}
 	
-	/**
-	 * Modifica cumplePropiedad por el pasado por parametro.
-	 * @param c, booleano que representa si se cumple la propiedad.
-	 * */
-	public void setCumplePropiedad(boolean c) {
-		cumplePropiedad = c;
-	}
 	
 	/**
 	 * Obtiene la Celda ubicada segun los indices pasados por parametro
@@ -263,13 +258,6 @@ public class Sudoku {
 		return this.cantFilas;
 	}
 	
-	/**
-	 * Obtiene un booleano que indica si el juego cumple las propiedades. 
-	 * @return true si el juego cumple las propiedades.
-	 **/
-	public boolean getCumplePropiedad() {
-		return cumplePropiedad;
-	}
 	
 	/**
 	 * Obtiene el tablero de celdas del sudoku.
@@ -277,6 +265,14 @@ public class Sudoku {
 	 **/
 	public Celda[][] getTablero(){
 		return tablero;
+	}
+	
+	/**
+	 * Obtiene un booleano que indica si el juego cumple las propiedades. 
+	 * @return true si el juego cumple las propiedades.
+	 **/
+	public boolean getCumplePropiedad() {
+		return cumplePropiedad;
 	}
 	
 
