@@ -1,3 +1,7 @@
-Antes de abrir el archivo de texto con la solución verifico que éste exista, que no contenga números de más, 
-que contenga la cantidad de números especificada (es decir, que no tenga números de menos) y que cada número
-esté entre 0 y 9.
+Minutas Proyecto:
+
+Antes de abrir el archivo de texto con la solución verifico que éste exista, que no contenga números de más ni 
+de menos, y que cada número esté entre 0 y 9.
+
+En caso de que alguna de estas cosas no se cumplan, va a aparecer un cartel indicandole al usuario que no se 
+pudo inicializar el juego y ademas aparecera un logger indicando el problema que se haya generado.
